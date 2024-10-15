@@ -1,10 +1,18 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-export const  connectDB = async () =>{
+// Cargar variables de entorno desde .env
+dotenv.config();
 
-    await mongoose.connect('mongodb+srv://guidodagostino87:jhpoVaBPd5lRUu6m@cluster0.lpg61.mongodb.net/Apotecario').then(()=>console.log("Base de datos, conectada."));
-   
-}
-
-
-// Ahi se puede colocar la URI de Mongo.
+export const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+    console.log("Base de datos conectada.");
+  } catch (error) {
+    console.error("Error conectando a la base de datos:", error);
+    process.exit(1); // Salir si no puede conectar a la base de datos
+  }
+};
